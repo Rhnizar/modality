@@ -9,6 +9,7 @@ export default function RadiologyModalitySimulator() {
   const [selectedStudy, setSelectedStudy] = useState<{ id: number; patientId: string; patientName: string; studyDescription: string; accessionNumber: string; modality: string; studyDate: string } | null>(null);
   const [isProcessing, setIsProcessing] = useState(false);
   const [processProgress, setProcessProgress] = useState(0);
+  const [showSuccessModal, setShowSuccessModal] = useState(false);
 
   const addLog = (message: string, type = 'info') => {
     const timestamp = new Date().toLocaleTimeString();
@@ -120,6 +121,7 @@ export default function RadiologyModalitySimulator() {
       addLog('PACS confirmation received', 'success');
       addLog('Study archived successfully', 'success');
       addLog(`Accession #${selectedStudy.accessionNumber} - Status: COMPLETED`, 'success');
+      setShowSuccessModal(true);
     }, 1500);
   };
 
@@ -128,6 +130,7 @@ export default function RadiologyModalitySimulator() {
     setStudyList([]);
     setSelectedStudy(null);
     setProcessProgress(0);
+    setShowSuccessModal(false);
     addLog('Console cleared. System ready.', 'info');
   };
 
@@ -304,6 +307,29 @@ export default function RadiologyModalitySimulator() {
           </div>
         </div>
       </div>
+
+      {/* Success Modal */}
+      {showSuccessModal && (
+        <div className="fixed inset-0 z-50 flex items-center justify-center bg-black/50 backdrop-blur-sm p-4">
+          <div className="bg-slate-800 border-2 border-green-500 rounded-lg p-8 max-w-sm w-full shadow-2xl transform transition-all animate-in fade-in zoom-in duration-300">
+            <div className="flex flex-col items-center text-center">
+              <div className="w-16 h-16 bg-green-500/20 rounded-full flex items-center justify-center mb-4">
+                <Send className="w-8 h-8 text-green-500" />
+              </div>
+              <h3 className="text-2xl font-bold text-white mb-2">Success!</h3>
+              <p className="text-gray-300 mb-6">
+                Study for <span className="text-green-400 font-semibold">{selectedStudy?.patientName}</span> has been successfully sent to PACS.
+              </p>
+              <button
+                onClick={() => setShowSuccessModal(false)}
+                className="w-full bg-green-600 hover:bg-green-700 text-white font-bold py-3 px-4 rounded-lg transition-colors"
+              >
+                Close
+              </button>
+            </div>
+          </div>
+        </div>
+      )}
     </div>
   );
 }
