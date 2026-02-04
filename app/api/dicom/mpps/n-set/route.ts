@@ -31,6 +31,7 @@ mpps_sop_class = '1.2.840.10008.3.1.2.3.3'
 ae.add_requested_context(mpps_sop_class, [ImplicitVRLittleEndian, ExplicitVRLittleEndian])
 
 sop_uid = '${sopInstanceUid}'
+study_uid = '${study.studyInstanceUID || '1.2.3.4.5.999.' + Date.now()}'
 
 ds = Dataset()
 ds.ReportedCharacterSet = 'ISO_IR 100'
@@ -47,6 +48,7 @@ series_item.ProtocolName = '${study.studyDescription || 'Standard Protocol'}'
 series_item.OperatorName = 'RADIOLOGIST^RIDA'
 series_item.SeriesInstanceUID = '1.2.840.113619.2.55.3.' + str(int(time.time()))
 series_item.SeriesDescription = '${study.studyDescription}'
+series_item.StudyInstanceUID = study_uid
 series_item.RetrieveAETitle = 'ORTHANC'
 series_item.ReferencedImageSequence = Sequence([]) 
 series_item.ReferencedNonImageCompositeSOPInstanceSequence = Sequence([])

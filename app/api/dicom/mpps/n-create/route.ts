@@ -16,6 +16,8 @@ export async function POST(request: NextRequest) {
             return NextResponse.json({ success: false, error: 'Missing parameters' }, { status: 400 });
         }
 
+        console.log("study instance uid : ", study.studyInstanceUID);
+
         const pythonScript = `import sys
 import time
 from pydicom.dataset import Dataset
@@ -31,7 +33,7 @@ mpps_sop_class = '1.2.840.10008.3.1.2.3.3'
 ae.add_requested_context(mpps_sop_class, [ImplicitVRLittleEndian, ExplicitVRLittleEndian])
 
 sop_uid = '${sopInstanceUid}'
-study_uid = '${study.studyInstanceUid || '1.2.3.4.5.999.' + Date.now()}'
+study_uid = '${study.studyInstanceUID || '1.2.3.4.5.999.' + Date.now()}'
 
 ds = Dataset()
 ds.ReportedCharacterSet = 'ISO_IR 100'

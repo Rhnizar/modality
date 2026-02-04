@@ -34,7 +34,7 @@ def generate_dicom_image(
     series_description="${study.studyDescription || 'Processed Series'}",
     modality="${study.modality || 'CT'}",
     sop_instance_uid="${sopInstanceUid}",
-    study_instance_uid="${study.studyInstanceUid || '1.2.3.4.5.999.' + Date.now()}",
+    study_instance_uid="${study.studyInstanceUID || '1.2.3.4.5.999.' + Date.now()}",
     accession_number="${study.accessionNumber}",
     image_width=512,
     image_height=512,
